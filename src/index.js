@@ -20,14 +20,14 @@ async function run() {
                 id
             }
             organization(login: $org) {
-              teams (first:1, userLogins: $userLogins, after: $cursor) { 
+              teams (first:100, userLogins: $userLogins, after: $cursor) {
                   nodes {
                     name
                 }
                 pageInfo {
                   hasNextPage
                   endCursor
-                }        
+                }
               }
             }
         }`
@@ -57,6 +57,9 @@ async function run() {
         let isTeamMember = teams.some((teamName) => {
             return team.toLowerCase() === teamName.toLowerCase()
         })
+
+        console.log(`teams: [${teams.join(', ')}] for ${username} in org ${organization}`)
+        console.log(`Belongs to ${team}?: ${isTeamMember}`)
 
         setOutput("teams", teams)
         setOutput("isTeamMember", isTeamMember)
