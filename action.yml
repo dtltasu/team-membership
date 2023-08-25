@@ -1,5 +1,8 @@
 name: 'team-membership'
 description: 'Get a user team membership in an organization'
+branding:
+  icon: 'at-sign'
+  color: 'blue'
 inputs:
   organization:
     description: 'Organization name (default is repo owner)'
