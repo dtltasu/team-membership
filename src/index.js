@@ -14,15 +14,20 @@ async function run() {
 
     console.log(`Will check if ${username}@${organization} belongs to ${team}`)
 
-    api.rest
-       .orgs
-       .getMembershipForUserInOrg({ org: organization, team_slug: team, username: username})
-       .then((response) => {
-         isTeamMember = response.body.state === "active"
-         setOutput("isTeamMember", isTeamMember) })
-       .catch((error) => {
-         onsole.log(error)
-         setFailed(error.message) })
+    api.request('GET /orgs/{org}/teams/{team}/memberships/{username}', {
+      org: organization,
+      team: team,
+      username: username,
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    }).then((response) => {
+        isTeamMember = response.body.state === "active"
+        setOutput("isTeamMember", isTeamMember) })
+      .catch((error) => {
+        onsole.log(error)
+        setFailed(error.message) })
+
   } catch (error) {
     console.log(error)
     setFailed(error.message)
