@@ -13,7 +13,7 @@ inputs:
     required: true
   GITHUB_TOKEN:
     description: 'GITHUB_TOKEN'
-    default:  ${{ github.GITHUB_TOKEN }}
+    default:  ${{ secrets.GITHUB_TOKEN }}
     required: true
 
 outputs:
