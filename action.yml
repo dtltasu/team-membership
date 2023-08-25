@@ -1,7 +1,7 @@
-name: 'login-teams-membership'
-description: 'Get a user teams membership in an organization'
+name: 'team-membership'
+description: 'Get a user team membership in an organization'
 inputs:
-  organization: 
+  organization:
     description: 'Organization name (default is repo owner)'
     required: false
     default:  ${{ github.repository_owner }}
@@ -9,18 +9,16 @@ inputs:
     description: 'Username to get teams or check team membership'
     required: true
   team:
-    description: 'If you specify a team name it will output if the user is a member of that team (case insensitive)'
-    required: false
-    default: ''
+    description: 'Team to check the membership'
+    required: true
   GITHUB_TOKEN:
     description: 'GITHUB_TOKEN'
+    default:  ${{ github.GITHUB_TOKEN }}
     required: true
 
 outputs:
-  teams: 
-    description: 'The list of teams the user belongs (array)'
   isTeamMember:
-    description: 'Predicate to indicate if user belongs to team'
+    description: 'Is the user a member of the team'
 runs:
   using: 'node16'
   main: 'dist/index.js'
