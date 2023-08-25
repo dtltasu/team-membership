@@ -9736,13 +9736,14 @@ __nccwpck_require__.r(__webpack_exports__);
 run()
 
 async function run() {
+  let isTeamMember = false;
+
   try {
     const api = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("GITHUB_TOKEN", { required: true }), {})
 
     const organization = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("organization") || _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.repo.owner
     const username = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("username", { required: true })
     const team = (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)("team", { required: true })
-    let isTeamMember = false;
 
     console.log(`Will check if ${username}@${organization} belongs to ${team}`)
 
@@ -9753,17 +9754,14 @@ async function run() {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       }
-    }).then((response) => {
-        isTeamMember = response.body.state === "active"
-        ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("isTeamMember", isTeamMember) })
-      .catch((error) => {
-        console.log(error)
-        ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message) })
+    }).then((response) => isTeamMember = response.body.state === "active")
+      .catch(console.log)
 
-  } catch (error) {
+  } catch(error) {
     console.log(error)
-    ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message)
   }
+
+  (0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("isTeamMember", isTeamMember)
 }
 })();
 
