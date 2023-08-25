@@ -20,4 +20,4 @@ outputs:
     description: 'Is the user a member of the team'
 runs:
   using: 'node16'
-  main: 'src/index.js'
+  main: 'dist/index.js'
