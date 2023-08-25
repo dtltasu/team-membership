@@ -9754,8 +9754,10 @@ async function run() {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       }
-    }).then((response) => isTeamMember = response.body.state === "active")
-      .catch(console.log)
+    }).then((response) => {
+        console.log(response)
+        isTeamMember = response.body.state === "active"
+      }).catch(console.log)
 
   } catch(error) {
     console.log(error)
