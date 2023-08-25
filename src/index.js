@@ -25,7 +25,7 @@ async function run() {
         isTeamMember = response.body.state === "active"
         setOutput("isTeamMember", isTeamMember) })
       .catch((error) => {
-        onsole.log(error)
+        console.log(error)
         setFailed(error.message) })
 
   } catch (error) {

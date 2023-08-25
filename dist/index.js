@@ -9757,7 +9757,7 @@ async function run() {
         isTeamMember = response.body.state === "active"
         ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setOutput)("isTeamMember", isTeamMember) })
       .catch((error) => {
-        onsole.log(error)
+        console.log(error)
         ;(0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.setFailed)(error.message) })
 
   } catch (error) {
