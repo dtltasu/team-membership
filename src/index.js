@@ -4,8 +4,6 @@ import { getOctokit, context } from '@actions/github'
 run()
 
 async function run() {
-  let isTeamMember = false;
-
   try {
     const api = getOctokit(getInput("GITHUB_TOKEN", { required: true }), {})
 
@@ -23,13 +21,14 @@ async function run() {
         'X-GitHub-Api-Version': '2022-11-28'
       }
     }).then((response) => {
-        console.log(response)
-        isTeamMember = response.data.state === "active"
-      }).catch(console.log)
+        console.log(response.data)
+        console.log('response.data.state === "active"', response.data.state === "active")
+
+        setOutput("isTeamMember", response.data.state === "active")
+      })
 
   } catch(error) {
+    setOutput("isTeamMember", false)
     console.log(error)
   }
-
-  setOutput("isTeamMember", isTeamMember)
 }
