@@ -9756,7 +9756,7 @@ async function run() {
       }
     }).then((response) => {
         console.log(response)
-        isTeamMember = response.body.state === "active"
+        isTeamMember = response.data.state === "active"
       }).catch(console.log)
 
   } catch(error) {
