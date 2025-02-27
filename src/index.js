@@ -13,18 +13,22 @@ async function run() {
 
     console.log(`Checking if ${username}@${organization} belongs to any of: ${teams.join(', ')}`)
 
-    const checks = teams.map(team => 
-      api.request('GET /orgs/{org}/teams/{team}/memberships/{username}', {
-        org: organization,
-        team: team,
-        username: username,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      })
-      .then(response => response.data.state === "active")
-      .catch(() => false) // Игнорируем ошибки, если команда не найдена или нет доступа
-    )
+    const checks = teams.map(async (team) => {
+      try {
+        const response = await api.request('GET /orgs/{org}/teams/{team}/memberships/{username}', {
+          org: organization,
+          team: team,
+          username: username,
+          headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        })
+        return response.data.state === "active"
+      } catch (error) {
+        console.error(`Error checking team ${team}:`, error)
+        return false
+      }
+    })
 
     const results = await Promise.all(checks)
     const isTeamMember = results.includes(true)
@@ -32,7 +36,8 @@ async function run() {
     console.log(`User is team member: ${isTeamMember}`)
     setOutput("isTeamMember", isTeamMember)
 
-  } catch(error) {
+  } catch (error) {
+    console.error("Unexpected error:", error)
     setFailed(error.message)
   }
 }
