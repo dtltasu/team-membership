@@ -1,4 +1,4 @@
-name: 'team-membership'
+name: 'multi-team-membership'
 description: 'Get a user team membership in an organization'
 branding:
   icon: 'at-sign'
