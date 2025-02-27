@@ -1,4 +1,4 @@
-# team-membership
+# multi-team-membership
 
 [GitHub Action](https://github.com/features/actions) to get the list of teams a user belongs in a given organization.
 It can also be optionally used to check if the user belongs to a given team
@@ -14,11 +14,11 @@ See [action.yml](action.yml)
 Checks if the user who triggered the worfklow (actor) doesn't belong to the `octocats` team
 
 ```yaml
--  uses: marcocarvalho/team-membership@v3
+-  uses: dtltasu/multi-team-membership@1.0
    id: checkUserMember
    with:
      username: ${{ github.actor }}
-     team: 'octocats'
+     team: " octocats, teamlead, "
 - if: ${{ steps.checkUserMember.outputs.isTeamMember == 'true' }}
   ...
 ```
