@@ -6,10 +6,10 @@ const github = {
   getOctokit: require('@actions/github').getOctokit,
 };
 
-process.env['INPUT_GITHUB_TOKEN'] = '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';
-process.env['INPUT_USERNAME'] = 'robertkirakosyanoptimaxdev';
+process.env['INPUT_GITHUB_TOKEN'] = '';
+process.env['INPUT_USERNAME'] = '';
 process.env['INPUT_TEAM'] = 'tl,teamleads,sre';
-process.env['INPUT_ORGANIZATION'] = 'optimaxdev';
+process.env['INPUT_ORGANIZATION'] = '';
 
 const mockCore = {
   getInput: (name, options) => {
