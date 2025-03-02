@@ -1,23 +1,12 @@
-import { getInput, setOutput, setFailed } from '@actions/core';
-import { getOctokit, context } from '@actions/github';
-
-// Оборачиваем запуск в IIFE для корректной работы с async/await
-(async () => {
-  await run();
-})();
-
-async function run() {
+// index.js
+exports.run = async function(core, github) {
   try {
-    // Получаем токен и инициализируем Octokit
-    const token = getInput('GITHUB_TOKEN', { required: true });
-    const api = getOctokit(token);
+    const token = core.getInput('GITHUB_TOKEN', { required: true });
+    const api = github.getOctokit(token);
+    const organization = core.getInput('organization') || github.context.repo.owner;
+    const username = core.getInput('username', { required: true });
+    const teamsInput = core.getInput('team', { required: true }).trim();
 
-    // Входные параметры
-    const organization = getInput('organization') || context.repo.owner;
-    const username = getInput('username', { required: true });
-    const teamsInput = getInput('team', { required: true }).trim();
-
-    // Проверяем, что список команд не пустой
     if (!teamsInput) {
       throw new Error('Team list cannot be empty');
     }
@@ -25,15 +14,14 @@ async function run() {
 
     console.log(`Checking if ${username}@${organization} belongs to any of: ${teams.join(', ')}`);
 
-    // Проверяем членство в каждой команде
     const checks = teams.map(async team => {
       console.log(`Requesting membership for ${username} in team ${team} of org ${organization}`);
       try {
         const response = await api.request(
-          'GET /orgs/{org}/teams/{team Slug}/memberships/{username}',
+          'GET /orgs/{org}/teams/{team_slug}/memberships/{username}',
           {
             org: organization,
-            team_slug: team, // Используем team_slug вместо team для корректной работы с API
+            team_slug: team,
             username: username,
             headers: {
               'X-GitHub-Api-Version': '2022-11-28',
@@ -43,18 +31,16 @@ async function run() {
         return response.data.state === 'active';
       } catch (err) {
         console.error(`Failed to check team ${team}: ${err.message}`);
-        return false; // Если запрос не удался (например, команда не существует или нет прав), считаем, что пользователь не в команде
+        return false;
       }
     });
 
-    // Ждем завершения всех проверок
     const results = await Promise.all(checks);
     const isTeamMember = results.includes(true);
 
     console.log(`User is team member: ${isTeamMember}`);
-    setOutput('isTeamMember', isTeamMember);
+    core.setOutput('isTeamMember', isTeamMember);
   } catch (err) {
-    // Если произошла критическая ошибка, завершаем с провалом
-    setFailed(`Action failed: ${err.message}`);
+    core.setFailed(`Action failed: ${err.message}`);
   }
-}
+};
