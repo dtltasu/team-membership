@@ -7,9 +7,9 @@ const github = {
 };
 
 process.env['INPUT_GITHUB_TOKEN'] = '';
-process.env['INPUT_USERNAME'] = '';
+process.env['INPUT_USERNAME'] = 'dtltasu';
 process.env['INPUT_TEAM'] = 'tl,teamleads,sre';
-process.env['INPUT_ORGANIZATION'] = '';
+process.env['INPUT_ORGANIZATION'] = 'optimaxdev';
 
 const mockCore = {
   getInput: (name, options) => {
